@@ -50,7 +50,7 @@ class AccountManager:
     INTEREST_RATE = 0.04  # 4% per annum
 
     def __init__(self):
-        self.storage = Storage("data/accounts.json")
+        self.storage = Storage()
         self.accounts = {}
         self._load_accounts()
 

@@ -20,3 +20,4 @@ data/loans.json
 *.swo
 *~
 .DS_Store
+.pytest_cache/

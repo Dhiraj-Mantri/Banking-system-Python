@@ -1,3 +1,2 @@
-# No external dependencies - uses built-in Tkinter
-# For packaging as EXE, install:
-# pyinstaller>=6.0
+pytest>=7.0
+flake8>=6.0
