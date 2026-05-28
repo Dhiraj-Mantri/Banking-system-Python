@@ -1,0 +1,3 @@
+# No external dependencies needed for basic version
+# Add below if you want to expand later:
+# requests>=2.31.0
