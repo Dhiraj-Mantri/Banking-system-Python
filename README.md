@@ -1,34 +1,43 @@
-<<<<<<< HEAD
-# dhiraj-simple-sample-project
-shell-scripting
-=======
 # Python Banking System
 
-A simple console-based Banking System built with Python.
+A Banking System built with Python featuring both CLI and GUI interfaces.
 
 ## Features
 - Create new bank accounts
 - Deposit & Withdraw money
 - Transfer funds between accounts
 - View balance & transaction history
+- Interest Calculation (4% p.a.)
+- Loan Management (Apply, EMI, Repay)
+- **Tkinter GUI Desktop App**
 - Persistent data storage (JSON)
 - PIN-based authentication
 
 ## How to Run
 
+### GUI Version (Recommended)
 ```bash
-# Clone the repository
-git clone https://github.com/Dhiraj-Mantri/dhiraj-simple-sample-project.git
-cd dhiraj-simple-sample-project
+cd Banking-system-Python
+python gui.py
+```
 
-# Run the application
+### CLI Version
+```bash
+cd Banking-system-Python
 python main.py
 ```
 
 ## Project Structure
-- `main.py` — Entry point / CLI menu
-- `bank/account.py` — Account class & logic
-- `bank/auth.py` — Authentication system
-- `bank/storage.py` — JSON file persistence
-- `bank/utils.py` — Helper functions
->>>>>>> 114f2c0 (feat: add Python Banking System)
+- `gui.py` — Tkinter GUI application
+- `main.py` — CLI entry point
+- `bank/account.py` — Account & interest logic
+- `bank/loan.py` — Loan management
+- `bank/auth.py` — Authentication
+- `bank/storage.py` — JSON persistence
+- `bank/utils.py` — Helpers
+
+## Version History
+- **v1.0** — Basic terminal banking
+- **v2.0** — Interest calculation
+- **v3.0** — Loan management
+- **v4.0** — Tkinter GUI

@@ -25,10 +25,8 @@ def get_input(prompt, default=None, as_float=False):
     try:
         suffix = f" [{default}]: " if default else ": "
         value = input(f"  {prompt}{suffix}").strip()
-
         if not value and default is not None:
             value = default
-
         if as_float:
             return float(value) if value else None
         return value

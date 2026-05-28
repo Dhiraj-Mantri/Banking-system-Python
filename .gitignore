@@ -13,6 +13,7 @@ build/
 venv/
 ENV/
 data/accounts.json
+data/loans.json
 .idea/
 .vscode/
 *.swp

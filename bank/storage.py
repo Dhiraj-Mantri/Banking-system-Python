@@ -1,5 +1,5 @@
 """
-JSON File Storage for Account Data
+JSON File Storage
 """
 
 import json
@@ -7,9 +7,8 @@ import os
 
 
 class Storage:
-    DATA_FILE = "data/accounts.json"
-
-    def __init__(self):
+    def __init__(self, filepath="data/accounts.json"):
+        self.DATA_FILE = filepath
         os.makedirs(os.path.dirname(self.DATA_FILE), exist_ok=True)
 
     def load(self):

@@ -1,0 +1,30 @@
+{
+  "157428": {
+    "account_number": "157428",
+    "name": "Dhiraj Mantri",
+    "balance": 1000.0,
+    "pin": "2001",
+    "transactions": [
+      {
+        "date": "2026-05-28 15:09:45",
+        "type": "OPENING",
+        "amount": 1000.0,
+        "balance": 1000.0
+      }
+    ]
+  },
+  "380931": {
+    "account_number": "380931",
+    "name": "Tasreem Bhai",
+    "balance": 1000.0,
+    "pin": "2001",
+    "transactions": [
+      {
+        "date": "2026-05-28 15:11:29",
+        "type": "OPENING",
+        "amount": 1000.0,
+        "balance": 1000.0
+      }
+    ]
+  }
+}

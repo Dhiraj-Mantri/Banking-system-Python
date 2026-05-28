@@ -1,5 +1,5 @@
 """
-Account Manager - Core banking operations
+Account Manager - Core banking operations with Interest Calculation
 """
 
 import random
@@ -8,12 +8,13 @@ from .storage import Storage
 
 
 class Account:
-    def __init__(self, account_number, name, balance, pin, transactions=None):
+    def __init__(self, account_number, name, balance, pin, transactions=None, total_interest_earned=0.0):
         self.account_number = account_number
         self.name = name
         self.balance = balance
         self.pin = pin
         self.transactions = transactions or []
+        self.total_interest_earned = total_interest_earned
 
     def to_dict(self):
         return {
@@ -21,7 +22,8 @@ class Account:
             "name": self.name,
             "balance": self.balance,
             "pin": self.pin,
-            "transactions": self.transactions
+            "transactions": self.transactions,
+            "total_interest_earned": self.total_interest_earned
         }
 
     @classmethod
@@ -31,7 +33,8 @@ class Account:
             name=data["name"],
             balance=data["balance"],
             pin=data["pin"],
-            transactions=data.get("transactions", [])
+            transactions=data.get("transactions", []),
+            total_interest_earned=data.get("total_interest_earned", 0.0)
         )
 
     def add_transaction(self, tx_type, amount):
@@ -44,8 +47,10 @@ class Account:
 
 
 class AccountManager:
+    INTEREST_RATE = 0.04  # 4% per annum
+
     def __init__(self):
-        self.storage = Storage()
+        self.storage = Storage("data/accounts.json")
         self.accounts = {}
         self._load_accounts()
 
@@ -67,10 +72,8 @@ class AccountManager:
     def create_account(self, name, initial_deposit, pin):
         acc_num = self._generate_account_number()
         account = Account(acc_num, name, initial_deposit, pin)
-
         if initial_deposit > 0:
             account.add_transaction("OPENING", initial_deposit)
-
         self.accounts[acc_num] = account
         self._save()
         return account
@@ -85,7 +88,6 @@ class AccountManager:
         account = self.accounts.get(account_number)
         if not account or amount <= 0:
             return False
-
         account.balance += amount
         account.add_transaction("DEPOSIT", amount)
         self._save()
@@ -95,7 +97,6 @@ class AccountManager:
         account = self.accounts.get(account_number)
         if not account or amount <= 0 or amount > account.balance:
             return False
-
         account.balance -= amount
         account.add_transaction("WITHDRAW", amount)
         self._save()
@@ -104,18 +105,42 @@ class AccountManager:
     def transfer(self, from_acc_num, to_acc_num, amount):
         if from_acc_num == to_acc_num:
             return False
-
         from_acc = self.accounts.get(from_acc_num)
         to_acc = self.accounts.get(to_acc_num)
-
         if not from_acc or not to_acc or amount <= 0 or amount > from_acc.balance:
             return False
-
         from_acc.balance -= amount
         from_acc.add_transaction(f"TRANSFER TO {to_acc_num}", amount)
-
         to_acc.balance += amount
         to_acc.add_transaction(f"TRANSFER FROM {from_acc_num}", amount)
+        self._save()
+        return True
 
+    def calculate_interest_preview(self, account_number, months):
+        account = self.accounts.get(account_number)
+        if not account or months <= 0:
+            return None
+        principal = account.balance
+        time_years = months / 12
+        interest = principal * self.INTEREST_RATE * time_years
+        return {
+            "principal": principal,
+            "months": months,
+            "interest_rate": self.INTEREST_RATE,
+            "interest": interest,
+            "new_balance": principal + interest
+        }
+
+    def credit_interest(self, account_number, months):
+        account = self.accounts.get(account_number)
+        if not account or months <= 0:
+            return False
+        preview = self.calculate_interest_preview(account_number, months)
+        if not preview:
+            return False
+        interest_amount = preview["interest"]
+        account.balance += interest_amount
+        account.total_interest_earned += interest_amount
+        account.add_transaction(f"INTEREST ({months}mo)", interest_amount)
         self._save()
         return True
